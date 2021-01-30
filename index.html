@@ -79,18 +79,32 @@
         const deposit = document.getElementById('addDeposit');
         deposit.addEventListener('click', function () {
             const depositAmount = convertValueToNumber('deposit-amount');
-            updateSpan('depositAmount', depositAmount);
-            updateSpan('balance-amount', depositAmount);
-            document.getElementById('deposit-amount').value = '';
+            if (depositAmount > 0) {
+                updateSpan('depositAmount', depositAmount);
+                updateSpan('balance-amount', depositAmount);
+                document.getElementById('deposit-amount').value = '';
+            } else {
+                alert("Balance can't be negative...");
+            }
         });
 
         //withdraw handler
         const withdraw = document.getElementById('withdraw');
         withdraw.addEventListener('click', function () {
             const withdrawBalance = convertValueToNumber('withdraw-amount');
-            updateSpan('current-withdraw', withdrawBalance);
-            updateSpan("balance-amount", -1 * withdrawBalance);
-            document.getElementById('withdraw-amount').value = "";
+            if (withdrawBalance > 0) {
+                const balance = document.getElementById('balance-amount').innerText;
+                const accountBalance = parseInt(balance);
+                if (withdrawBalance <= accountBalance) {
+                    updateSpan('current-withdraw', withdrawBalance);
+                    updateSpan('balance-amount', -1 * withdrawBalance);
+                    document.getElementById('withdraw-amount').value = '';
+                } else {
+                    alert('Account Balance is Low...');
+                }
+            } else {
+                alert('Withdraw amount can not be negative...');
+            }
         });
         function convertValueToNumber(id) {
             const fetch = document.getElementById(id).value;
